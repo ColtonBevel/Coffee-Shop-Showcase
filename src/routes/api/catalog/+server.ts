@@ -1,6 +1,5 @@
 import { Client, Environment } from 'square';
 import { randomUUID } from 'crypto';
-import { addItem, getCart } from '$lib/cart.store.js';
 
 const client = new Client({
     accessToken: import.meta.env.VITE_SQUARE_ACCESS_TOKEN,
@@ -43,20 +42,9 @@ export async function POST({ request }: { request: Request }) {
         case 'addItemToCart':
             const body = await request.json();  // Parse the JSON body
             const itemId = body.itemId;
+            const cart = body.cart;
 
-            await itemLookup(itemId)
-                .then((result: any) => {
-                    addItem(
-                        result.id,
-                        result.item_data.name,
-                        result.item_data.variations[0].item_variation_data.price_money.amount
-                    )
-                });
-
-            //todo: finish this
-
-            // console log the cart from the store
-            console.log(getCart());
+            console.log(cart);
             
             return new Response(JSON.stringify({
                 status: 200,

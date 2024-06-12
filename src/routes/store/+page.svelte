@@ -6,7 +6,7 @@
 
 	export let data: PageServerData;
 
-    let cartTooltip: boolean = false;
+	let cartTooltip: boolean = false;
 
 	let items: any[any];
 	if (data && data.props && data.props.items) {
@@ -19,27 +19,33 @@
 
 	async function addItemToCart(event: SubmitEvent) {
 		const itemId = (event.submitter as HTMLButtonElement).name;
-        cartTooltip = true;
+		cartTooltip = true;
 		let res = await fetch('api/catalog?action=addItemToCart', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				'itemId': itemId
-			})
+				itemId: itemId,
+				cart: localStorage.getItem('cart') || ''
+			} as { itemId: string, cart: string })
 		});
 
-        if (res.ok) {
-            setTimeout(() => {
-                cartTooltip = false;
-            }, 2000);
-        } else {
-            console.error('Failed to add item to cart');
-        }
+		if (res.ok) {
+			if (!localStorage.getItem('cart')) {
+				localStorage.setItem('cart', JSON.stringify(itemId))
+			} else if (localStorage.getItem('cart')) {
+				let cart: any[] = JSON.parse(localStorage.getItem('cart')); //<!--todo: fix this
+				cart.push(itemId);
+				localStorage.setItem('cart', JSON.stringify(cart));
+			}
+			setTimeout(() => {
+				cartTooltip = false;
+			}, 2000);
+		} else {
+			console.error('Failed to add item to cart');
+		}
 	}
-
-    //<!--? I think this is fine, but I can't remember
 
 	let navHeight: number;
 </script>
