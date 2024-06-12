@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Navbar from "$lib/components/navbar.svelte";
     import "$lib/basecss.css";
+
+    let navHeight: number;
 </script>
 
-<body>
-    <Navbar />
+<body style="--nav-height: {navHeight}px">
+    <Navbar bind:height={navHeight} />
     <div class="content">
         <div>
             <h1>Welcome to the Local Coffee Shop</h1>

@@ -6,7 +6,7 @@
     import Navbar from '$lib/components/navbar.svelte';
 	import '$lib/basecss.css';
 
-	const appId = 'sandbox-sq0idb-5hedmYPn2gNNwHXm9GTSHQ';
+	const appId = import.meta.env.VITE_SQUARE_APP_ID;
 	const locationId = 'LMVZH848T9V88';
 
 	let card: any;
